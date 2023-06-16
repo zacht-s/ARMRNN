@@ -17,7 +17,7 @@ def get_armnn_data(tickers, start, end, filename, p=4, k=1):
     """
 
     prices = yf.download(tickers=tickers, start=start, end=end)['Adj Close']
-    armnn_data = pd.DataFrame()
+    armrnn_data = pd.DataFrame()
     for stock in prices.columns:
         returns = prices[stock].pct_change()
 
@@ -29,16 +29,21 @@ def get_armnn_data(tickers, start, end, filename, p=4, k=1):
             temp[f'TM{i}'] = returns.shift(i+1) - z
         temp = temp.dropna().reset_index(drop=True)
 
-        armnn_data = pd.concat([armnn_data, temp])
+        armrnn_data = pd.concat([armrnn_data, temp])
     print('Written to CSV:')
-    print(armnn_data)
-    armnn_data.to_csv(f'{filename}.csv')
+    print(armrnn_data)
+    armrnn_data.to_csv(f'{filename}.csv', index=False)
 
 
 if __name__ == '__main__':
-    tickers = ['AAPL', 'MS']
-    start = datetime(2020, 1, 1)
-    end = datetime(2022, 1, 1)
+    tickers = ['UNH', 'MSFT', 'GS', 'HD', 'MCD',
+               'CAT', 'AMGN', 'V', 'BA', 'CRM',
+               'HON', 'AAPL', 'TRV', 'AXP', 'JNJ',
+               'CVX', 'WMT', 'PG', 'JPM', 'IBM',
+               'NKE', 'MRK', 'MMM', 'DIS', 'KO',
+               'DOW', 'CSCO', 'VZ', 'INTC', 'WBA']
+    start = datetime(2012, 1, 1)
+    end = datetime(2023, 1, 1)
 
-    get_armnn_data(tickers, start=start, end=end, filename='armrnn_data', p=4, k=1)
+    get_armnn_data(tickers, start=start, end=end, filename='test', p=4, k=1)
 
